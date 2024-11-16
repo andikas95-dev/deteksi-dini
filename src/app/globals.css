@@ -2,32 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+/* Name: Blue #14A9E5
+  Author: Andika Perdana
+  URL: https://zippystarter.com/tools/shadcn-ui-theme-generator
+*/
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 197 100% 100%;
+    --foreground: 197 5% 10%;
+    --card: 197 50% 100%;
+    --card-foreground: 197 5% 15%;
+    --popover: 197 100% 100%;
+    --popover-foreground: 197 100% 10%;
+    --primary: 197 83.9% 48.8%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 197 30% 90%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 159 30% 95%;
+    --muted-foreground: 197 5% 40%;
+    --accent: 159 30% 90%;
+    --accent-foreground: 197 5% 15%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 197 5% 100%;
+    --border: 197 30% 82%;
+    --input: 197 30% 50%;
+    --ring: 197 83.9% 48.8%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --primary-blue-2: #32b3e7;
+  }
+
+  .dark {
+    --background: 197 50% 10%;
+    --foreground: 197 5% 100%;
+    --card: 197 50% 10%;
+    --card-foreground: 197 5% 100%;
+    --popover: 197 50% 5%;
+    --popover-foreground: 197 5% 100%;
+    --primary: 197 83.9% 48.8%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 197 30% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 159 30% 25%;
+    --muted-foreground: 197 5% 65%;
+    --accent: 159 30% 25%;
+    --accent-foreground: 197 5% 95%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 197 5% 100%;
+    --border: 197 30% 50%;
+    --input: 197 30% 50%;
+    --ring: 197 83.9% 48.8%;
+    --radius: 0.5rem;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --primary-blue-2: #32b3e7;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-5xl font-bold;
+  }
+  h2 {
+    @apply text-4xl font-bold;
+  }
+  h3 {
+    @apply text-3xl font-bold;
+  }
+  h4 {
+    @apply text-2xl font-bold;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .helper-link-cover::after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
