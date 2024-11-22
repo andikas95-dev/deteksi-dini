@@ -1,6 +1,9 @@
+'use client';
 import HeroBanner from '@/components/assets/hero_banner.png';
 import { ContactIcon } from '@/components/assets/icons';
 import { LogoDeteksiDiniPrimaryBlack } from '@/components/assets/icons/logo-deteksidini';
+import InstallPrompt from '@/components/pwa/install-prompt';
+import PushNotificationManager from '@/components/pwa/push-notification-manager';
 import HomePageMenu from '@/components/shared-components/home-page-menu';
 import LayoutRoot from '@/components/shared-components/layout-root';
 import { Button } from '@/components/ui/button';
@@ -11,27 +14,31 @@ import { HiChevronRight } from 'react-icons/hi2';
 
 function Home() {
   return (
-    <LayoutRoot>
-      <div className='h-[50rem]'>
-        <section>
-          <div className="relative">
-            <div aria-hidden className="select-none">
-              <Image src={HeroBanner} alt="hero" height={288} width={640} />
-            </div>
-            <div className="flex flex-col absolute top-0 left-0 w-full h-full p-4">
-              <div className="flex flex-col flex-1 items-start justify-between">
-                <LogoDeteksiDiniPrimaryBlack className="h-8 md:h-10" />
-                <div className="w-[60%] sm:w-[55%] space-y-1">
-                  <h5 className="text-primary text-lg sm:text-2xl">
-                    Deteksi<span className="font-semibold">Dini</span>
-                  </h5>
-                  <p className="text-xs sm:text-sm">
-                    Inisiatif orang tua baru untuk memantau kesehatan anak dan menjauhkannya dari kondisi Stunting.
-                  </p>
+    <>
+      {/* <PushNotificationManager />
+      <InstallPrompt /> */}
+      <LayoutRoot>
+        <div className="h-[50rem]">
+          <section>
+            <div className="relative">
+              <div aria-hidden className="select-none">
+                <Image src={HeroBanner} alt="hero" height={288} width={640} />
+              </div>
+              <div className="flex flex-col absolute top-0 left-0 w-full h-full p-4">
+                <div className="flex flex-col flex-1 items-start justify-between">
+                  <LogoDeteksiDiniPrimaryBlack className="h-8 md:h-10" />
+                  <div className="w-[60%] sm:w-[55%] space-y-1">
+                    <h5 className="text-primary text-lg sm:text-2xl">
+                      Deteksi<span className="font-semibold">Dini</span>
+                    </h5>
+                    <p className="text-xs sm:text-sm">
+                      Inisiatif orang tua baru untuk memantau kesehatan anak dan
+                      menjauhkannya dari kondisi Stunting.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* <Image
+              {/* <Image
             className="w-full"
             src="https://placehold.co/600x400?text=Gambar+Pembuka"
             alt="hero"
@@ -53,55 +60,56 @@ function Home() {
               </div>
             </CardContent>
           </Card> */}
+            </div>
+          </section>
+          <div className="px-4 py-6 text-center">
+            <h2 className="text-lg sm:text-xl font-semibold sm:mx-6">
+              Cek Sekarang Apakah Anak Anda sedang dalam kondisi Stunting
+            </h2>
+            <Link href="/provinces" passHref>
+              <Button className="mt-4 block rounded-full" size="lg" fullWidth>
+                Telusuri sekarang
+              </Button>
+            </Link>
           </div>
-        </section>
-        <div className="px-4 py-6 text-center">
-          <h2 className="text-lg sm:text-xl font-semibold sm:mx-6">
-            Cek Sekarang Apakah Anak Anda sedang dalam kondisi Stunting
-          </h2>
-          <Link href="/provinces" passHref>
-            <Button className="mt-4 block rounded-full" size="lg" fullWidth>
-              Telusuri sekarang
-            </Button>
-          </Link>
-        </div>
 
-        <div className="rounded-sm px-4">
-          <div className="flex flex-row relative py-5 px-4 border-gray-100 border-2 rounded-lg justify-between">
-            <div className="flex flex-row items-center">
+          <div className="rounded-sm px-4">
+            <div className="flex flex-row relative py-5 px-4 border-gray-100 border-2 rounded-lg justify-between">
+              <div className="flex flex-row items-center">
+                <div
+                  aria-hidden
+                  className="flex flex-none items-center justify-center w-12 h-12 bg-blue-50 rounded-full"
+                >
+                  {createElement(ContactIcon, {
+                    className: 'w-6 h-6 text-primary',
+                  })}
+                </div>
+                <div className="ml-4 space-y-1">
+                  <h3 className="text-base leading-5 font-semibold">
+                    <Link href="/kontak-darurat" className="helper-link-cover">
+                      Kontak Darurat
+                    </Link>
+                  </h3>
+                  <p className="text-sm leading-4 text-gray-500">
+                    Situs dan kontak penting terkait COVID-19
+                  </p>
+                </div>
+              </div>
               <div
                 aria-hidden
-                className="flex flex-none items-center justify-center w-12 h-12 bg-blue-50 rounded-full"
+                className="flex flex-none items-center justify-center ml-2"
               >
-                {createElement(ContactIcon, {
-                  className: 'w-6 h-6 text-primary',
-                })}
+                <HiChevronRight className="w-6 h-6 text-primary" />
               </div>
-              <div className="ml-4 space-y-1">
-                <h3 className="text-base leading-5 font-semibold">
-                  <Link href="/kontak-darurat" className="helper-link-cover">
-                    Kontak Darurat
-                  </Link>
-                </h3>
-                <p className="text-sm leading-4 text-gray-500">
-                  Situs dan kontak penting terkait COVID-19
-                </p>
-              </div>
-            </div>
-            <div
-              aria-hidden
-              className="flex flex-none items-center justify-center ml-2"
-            >
-              <HiChevronRight className="w-6 h-6 text-primary" />
             </div>
           </div>
-        </div>
 
-        <div className="p-4">
-          <HomePageMenu />
+          <div className="p-4">
+            <HomePageMenu />
+          </div>
         </div>
-      </div>
-    </LayoutRoot>
+      </LayoutRoot>
+    </>
   );
 }
 

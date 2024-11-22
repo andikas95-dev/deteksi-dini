@@ -8,14 +8,21 @@ import InputPasswordForm from '@/components/form/input-password-form';
 import LayoutRoot from '@/components/shared-components/layout-root';
 import { Button } from '@/components/ui/button';
 import { RESET } from '@/helpers/constants/path';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { FormProvider, useForm } from 'react-hook-form';
 
 function Login() {
   const form = useForm();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    })
+    console.log("🚀 ~ onSubmit ~ result:", result)
   };
 
   return (

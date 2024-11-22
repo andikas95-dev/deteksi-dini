@@ -7,10 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+  // id       String @id @default(cuid())
 model Users {
-  id       String @id @default(cuid())
+  id       Int    @id @default(autoincrement())
   nama     String
   email    String @unique
   password String
-  role     String 
+  role     String
 }
