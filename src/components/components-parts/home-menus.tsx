@@ -1,34 +1,47 @@
-
-import { UrlObject } from "url";
+import { UrlObject } from 'url';
 import {
   AmbulanceIcon,
   EducationIcon,
-  HospitalIcon
-} from "@/components/assets/icons";
-import { PERIKSA_ANAK, DATA_ANAK, FAQ, HOME, TAMBAH_DATA_ANAK } from "@/helpers/constants/path";
-import { HiOutlineFolder, HiOutlineHome, HiOutlineSearch } from "react-icons/hi";
-import { RiUserSettingsLine, RiUserSharedLine, RiUserAddLine  } from "react-icons/ri";
+  HospitalIcon,
+} from '@/components/assets/icons';
+import {
+  PERIKSA_ANAK,
+  DATA_ANAK,
+  HOME,
+  TAMBAH_DATA_ANAK,
+  RIWAYAT_PERIKSA,
+} from '@/helpers/constants/path';
+import {
+  HiOutlineFolder,
+  HiOutlineHome,
+  HiOutlineSearch,
+} from 'react-icons/hi';
+import {
+  RiUserSettingsLine,
+  RiUserSharedLine,
+  RiUserAddLine,
+} from 'react-icons/ri';
 
 export interface HomeMenuItem {
   name: string;
   href: UrlObject | string;
-  icon: React.ComponentType<React.ComponentProps<"svg">>;
+  icon: React.ComponentType<React.ComponentProps<'svg'>>;
   external?: boolean;
 }
 
 export const homeMenus: HomeMenuItem[] = [
   {
-    name: "Periksa Anak",
+    name: 'Periksa Anak',
     href: PERIKSA_ANAK,
     icon: HiOutlineSearch,
   },
   {
-    name: "Tambah Data Anak",
+    name: 'Tambah Data Anak',
     href: TAMBAH_DATA_ANAK,
     icon: RiUserAddLine,
   },
   {
-    name: "Data Anak",
+    name: 'Data Anak',
     href: DATA_ANAK,
     icon: HiOutlineFolder,
   },
@@ -48,9 +61,9 @@ export const homeMenus: HomeMenuItem[] = [
   //   icon: EducationIcon,
   // },
   {
-    name: "Edukasi",
-    href: FAQ,
+    name: 'Riwayat Periksa',
     icon: EducationIcon,
+    href: RIWAYAT_PERIKSA,
   },
   // {
   //   name: "Donasi",
@@ -72,36 +85,36 @@ export const homeMenus: HomeMenuItem[] = [
 
 export interface NavigationItem {
   name: string;
-  icon: React.ComponentType<React.ComponentProps<"svg">>;
+  icon: React.ComponentType<React.ComponentProps<'svg'>>;
   href: string;
   exact?: boolean;
   external?: boolean;
   isLogged?: boolean;
 }
 
-export type NavMenuItem = Omit<NavigationItem, "icon">;
+export type NavMenuItem = Omit<NavigationItem, 'icon'>;
 
 export const bottomNavigation: NavigationItem[] = [
   {
-    name: "Beranda",
+    name: 'Beranda',
     icon: HiOutlineHome,
     href: HOME,
     exact: true,
   },
   {
-    name: "Data Anak",
+    name: 'Data Anak',
     icon: HiOutlineFolder,
     href: DATA_ANAK,
   },
   {
-    name: "Periksa Anak",
+    name: 'Periksa Anak',
     icon: HiOutlineSearch,
     href: PERIKSA_ANAK,
   },
   {
-    name: "Edukasi",
+    name: 'Riwayat Periksa',
     icon: EducationIcon,
-    href: FAQ,
+    href: RIWAYAT_PERIKSA,
   },
   // {
   //   name: "Info Umum",
@@ -109,15 +122,15 @@ export const bottomNavigation: NavigationItem[] = [
   //   href: "/faq",
   // },
   {
-    name: "Login",
+    name: 'Login',
     icon: RiUserSharedLine,
     href: '/login',
     isLogged: false,
   },
   {
-    name: "Profil",
-    icon: RiUserSettingsLine ,
+    name: 'Profil',
+    icon: RiUserSettingsLine,
     href: '/profile',
     isLogged: true,
-  }
+  },
 ];

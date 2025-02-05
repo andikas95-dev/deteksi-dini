@@ -1,9 +1,3 @@
-'use client'
-
-function PeriksaAnak() {
-  return (
-    <div>PeriksaAnak</div>
-  )
-}
+import PeriksaAnak from '@/features/periksa-anak/ui/PeriksaAnak';
 
 export default PeriksaAnak

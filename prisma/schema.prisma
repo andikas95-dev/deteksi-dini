@@ -7,11 +7,94 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-  // id       String @id @default(cuid())
-model Users {
-  id       Int    @id @default(autoincrement())
-  nama     String
-  email    String @unique
+// id       String @id @default(cuid())
+model users {
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
   password String
   role     String
+  Anak     childs[]
+  // Diagnosa Diagnosa[]
+
+  @@map("users")
+}
+
+model childs {
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  nama_anak     String
+  tanggal_lahir DateTime
+  // berat_badan   Int
+  // tinggi_badan  Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  Users    users?     @relation(fields: [user_id], references: [id])
+  Diagnosa diagnosa[]
+
+  @@map("childs")
+}
+
+model gejala {
+  idx         Int    @id @default(autoincrement())
+  gejala_id   String @unique
+  nama_gejala String
+  cf_pakar    Float
+  // solusi      String @db.LongText
+
+  // Rules    Rules[]
+  // Diagnosa Diagnosa[]
+  DetailDiagnosa detail_diagnosa[]
+
+  @@index([gejala_id], name: "gejala_id")
+  @@map("gejala")
+}
+
+// model Penyakit {
+//   idx           Int     @id @default(autoincrement())
+//   penyakit_id   String  @unique
+//   nama_penyakit String
+//   deskripsi     String  @db.LongText
+//   Rules         Rules[]
+
+//   @@index([penyakit_id], name: "penyakit_id")
+// }
+
+// model Rules {
+//   id          Int    @id @default(autoincrement())
+//   gejala_id   String
+//   // penyakit_id String
+//   cf_pakar    Float
+
+//   Gejala   Gejala   @relation(fields: [gejala_id], references: [gejala_id])
+//   // Penyakit Penyakit @relation(fields: [penyakit_id], references: [penyakit_id])
+// }
+
+model diagnosa {
+  id                   Int      @id @default(autoincrement())
+  child_id             Int
+  cf_result            Float    @default(0)
+  cf_result_percentage Float    @default(0)
+  created_at           DateTime @default(now())
+
+  Anak           childs            @relation(fields: [child_id], references: [id])
+  // Gejala Gejala @relation(fields: [gejala_id], references: [gejala_id])
+  DetailDiagnosa detail_diagnosa[]
+
+  @@map("diagnosa")
+}
+
+model detail_diagnosa {
+  id          Int    @id @default(autoincrement())
+  diagnosa_id Int
+  gejala_id   String
+  cf_pakar    Float
+  cf_user     Float
+  cf_combined Float
+
+  Diagnosa diagnosa @relation(fields: [diagnosa_id], references: [id])
+  Gejala   gejala   @relation(fields: [gejala_id], references: [gejala_id])
+
+  @@map("detail_diagnosa")
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import BabyIcon from '@/components/assets/icons/baby-icon';
 import { AvatarIcon, Avatar } from '@/components/ui/avatar';
@@ -7,27 +8,68 @@ import { Button } from '@/components/ui/button';
 import DatePickerForm from '@/components/form/date-picker-form';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { DataAnak } from '@/helpers/interface/child';
+import { stat } from 'fs';
 
 interface FormPasienProps {
   status?: 'create' | 'update';
+  detailData?: DataAnak;
+  onSubmitDataAnak?: (data: any) => void;
 }
 
-function FormPasien({ status = 'create' }: FormPasienProps) {
+interface FormAnakProps {
+  nama_anak?: string;
+  tanggal_lahir: {
+    from?: Date;
+    to?: Date;
+  };
+}
+
+function FormPasien({ status = 'create', detailData, onSubmitDataAnak }: FormPasienProps) {
   const { value: valEdit, setValue: setValEdit } = useBoolean();
   const router = useRouter();
 
-  const form = useForm({
+  const form = useForm<FormAnakProps>({
     defaultValues: {
-      tanggalLahir: {
+      nama_anak: undefined,
+      tanggal_lahir: {
         from: undefined,
         to: undefined,
       },
     },
   });
 
+  useEffect(() => {
+    console.log('🚀 ~ useEffect ~ status:', status, detailData);
+    if (status === 'update' && detailData) {
+      const { nama_anak, tanggal_lahir } = detailData;
+      form.reset({
+        nama_anak,
+        tanggal_lahir: {
+          from: new Date(tanggal_lahir),
+          to: new Date(tanggal_lahir),
+        },
+      });
+      // form.setValue('nama_anak', nama_anak);
+      // form.setValue('tanggal_lahir', {
+      //   from: new Date(tanggal_lahir),
+      //   to: new Date(tanggal_lahir),
+      // });
+    }
+  }, [detailData, status]);
+
   const onSubmit = (data: any) => {
-    console.log(data);
+    // console.log("🚀 ~ onSubmit ~ data:", data)
+    if (onSubmitDataAnak) {
+      onSubmitDataAnak(data);
+    }
+    // if(status === 'create'){
+      
+    // }
   };
+
+  const watchAll = form.watch();
+  // console.assert('🚀 ~ FormPasien ~ form:', form);
 
   return (
     <FormProvider {...form}>
@@ -43,13 +85,13 @@ function FormPasien({ status = 'create' }: FormPasienProps) {
           </Avatar>
         </div>
         <InputForm
-          name="nama"
+          name="nama_anak"
           label="Nama Anak"
           placeholder="Nama Anak"
           disabled={status === 'update' && !valEdit}
         />
         <DatePickerForm
-          name="tanggalLahir"
+          name="tanggal_lahir"
           label="Tanggal Lahir"
           placeholder="Pilih Tanggal Lahir"
           position="left"

@@ -1,10 +1,12 @@
 'use client';
-import React, { createElement } from 'react';
+import React, { createElement, useEffect } from 'react';
 import { bottomNavigation, NavigationItem } from './home-menus';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { cva } from 'class-variance-authority';
+import { useBoolean } from 'usehooks-ts';
+import { useSession } from 'next-auth/react';
 
 const navigationClasses = cva(
   [
@@ -23,10 +25,21 @@ const navigationClasses = cva(
 
 function BottomNavigations() {
   const pathname = usePathname();
+  const session = useSession();
+  const {value: isLogin, setValue: setIsLogin} = useBoolean(false);
   console.log('🚀 ~ BottomNavigations ~ pathname:', pathname);
 
-  // TODO: Buat fungsi untuk validasi login secara global
-  const isLogin = false;
+  // // TODO: Buat fungsi untuk validasi login secara global
+  // const isLogin = false;
+
+  useEffect(() => {
+    if(session.status === 'authenticated') {
+      setIsLogin(true);
+    }else {
+      setIsLogin(false);
+    }
+
+  },[isLogin, setIsLogin, session]);
 
   const renderItem = (item: Pick<NavigationItem, 'icon' | 'name'>) => {
     return (

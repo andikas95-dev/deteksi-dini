@@ -7,12 +7,17 @@ import PushNotificationManager from '@/components/pwa/push-notification-manager'
 import HomePageMenu from '@/components/shared-components/home-page-menu';
 import LayoutRoot from '@/components/shared-components/layout-root';
 import { Button } from '@/components/ui/button';
+import { useIsFetching } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createElement } from 'react';
 import { HiChevronRight } from 'react-icons/hi2';
 
 function Home() {
+
+  const isFetching = useIsFetching()
+  console.log("🚀 ~ Providers ~ isFetching:", isFetching)
+
   return (
     <>
       {/* <PushNotificationManager />

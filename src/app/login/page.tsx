@@ -8,12 +8,23 @@ import InputPasswordForm from '@/components/form/input-password-form';
 import LayoutRoot from '@/components/shared-components/layout-root';
 import { Button } from '@/components/ui/button';
 import { RESET } from '@/helpers/constants/path';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { toast } from "sonner"
+
 
 function Login() {
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
+  const session: any = useSession();
+  const router = useRouter();
 
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -22,8 +33,25 @@ function Login() {
       password: data.password,
       redirect: false,
     })
+
+    if(!result?.ok){
+      toast.error("Email atau Password Anda Salah", {
+        position: "top-center",
+        duration: 2000
+      })
+    }
     console.log("🚀 ~ onSubmit ~ result:", result)
   };
+
+  useEffect(() => {
+    console.log("🚀 ~ useEffect ~ session:", session)
+    if(session?.data?.user?.role == 'user'){
+      router.replace("/")
+    }
+    if(session?.data?.user?.role == 'admin'){
+      router.replace("/ap/dashboard")
+    }
+  }, [session]);
 
   return (
     <LayoutRoot className="px-4" bottomNavOnly>
@@ -33,7 +61,7 @@ function Login() {
           className="flex flex-col gap-3 justify-center pt-32"
         >
           <div className="py-8">
-            <LogoDeteksiDiniPrimary width={400} className="mx-auto" />
+            <LogoDeteksiDiniPrimary width={400} className="mx-auto w-full" />
           </div>
           <InputForm name="email" label="Email" placeholder="Email" />
           <InputPasswordForm

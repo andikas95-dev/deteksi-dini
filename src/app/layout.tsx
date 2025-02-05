@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+import { Toaster } from '@/components/ui/sonner';
+import { useIsFetching } from '@tanstack/react-query';
+
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -21,6 +24,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <head>
@@ -48,6 +52,7 @@ export default function RootLayout({
       >
         <Providers>
           <main>{children}</main>
+          <Toaster richColors />
         </Providers>
       </body>
     </html>

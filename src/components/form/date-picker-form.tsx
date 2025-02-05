@@ -38,10 +38,10 @@ function DatePickerForm({
       control={form.control}
       name={name}
       render={({ field }) => {
-        console.log('🚀 ~ field:', field);
+        // console.log('🚀 ~ field:', field);
 
         const handleDataChane = (range: { from: Date; to: Date }) => {
-          console.log('🚀 ~ range:', range);
+          // console.log('🚀 ~ range:', range);
           field.onChange(range)
           // onDateSelect
           return;

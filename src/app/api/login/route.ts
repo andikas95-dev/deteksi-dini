@@ -6,6 +6,6 @@ export async function GET() {
 }
 
 
-export async funtion POST(){
+// export async funtion POST(){
   
-}
+// }

@@ -6,9 +6,33 @@ import { getInitials } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { TAMBAH_DATA_ANAK } from '@/helpers/constants/path';
 import CardDataAnak from '@/components/components-parts/card-data-anak';
+import { useQuery } from '@tanstack/react-query';
+import { locbe } from '@/lib/axiosInstance';
+import { useSession } from 'next-auth/react';
+import { Spinner } from '@/components/ui/spinner';
+import Link from 'next/link';
 
 function DaftarAnak() {
   const router = useRouter();
+
+  const session: any = useSession();
+  // console.log('🚀 ~ DaftarAnak ~ session:', session);
+
+  const { data: listAnak, isLoading } = useQuery({
+    queryKey: ['listDataAnak', `USID - ${session?.data?.user?.id}]`],
+    queryFn: async () => {
+      const res = await locbe.get('/data-anak', {
+        params: {
+          usid: session?.data?.user?.id,
+        },
+      });
+
+      return res.data;
+    },
+    enabled: !!session?.data?.user?.id,
+  });
+
+  console.log('🚀 ~ DaftarAnak ~ listAnak:', listAnak);
 
   return (
     <LayoutRoot className="px-4">
@@ -18,15 +42,11 @@ function DaftarAnak() {
           Tambah Data
         </Button>
       </div>
-      {new Array(10).fill(0).map((_, i) => (
-        <CardDataAnak
-          key={i}
-          data={{
-            nama: `Anak ${i + 1}`,
-            tanggalLahir: '12-12-2021',
-            id: i.toString(),
-          }}
-        />
+      <Spinner show={isLoading} />
+      {listAnak?.map((dataAnak: any, i: number) => (
+        <Link href={`/data-anak/${dataAnak.id}`} key={dataAnak.id}>
+          <CardDataAnak data={dataAnak} />
+        </Link>
       ))}
     </LayoutRoot>
   );

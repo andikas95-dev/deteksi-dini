@@ -34,7 +34,7 @@ function InputForm({
         <FormItem>
           <FormLabel className={labelClassName}>{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} {...props} {...field} />
+            <Input placeholder={placeholder} {...props} {...field} value={field.value ?? ''} />
           </FormControl>
           {/* <FormDescription>This is your public display name.</FormDescription> */}
           <FormMessage />
