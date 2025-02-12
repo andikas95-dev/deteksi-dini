@@ -14,7 +14,7 @@ model users {
   email    String   @unique
   password String
   role     String
-  Anak     childs[]
+  Childs   childs[]
   // Diagnosa Diagnosa[]
 
   @@map("users")
@@ -37,7 +37,7 @@ model childs {
 }
 
 model gejala {
-  idx         Int    @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   gejala_id   String @unique
   nama_gejala String
   cf_pakar    Float
@@ -78,7 +78,7 @@ model diagnosa {
   cf_result_percentage Float    @default(0)
   created_at           DateTime @default(now())
 
-  Anak           childs            @relation(fields: [child_id], references: [id])
+  Childs         childs?           @relation(fields: [child_id], references: [id])
   // Gejala Gejala @relation(fields: [gejala_id], references: [gejala_id])
   DetailDiagnosa detail_diagnosa[]
 

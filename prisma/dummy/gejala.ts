@@ -38,7 +38,7 @@ export const dummyGejala: Gejala[] = [
   {
     gejala_id: 'G07',
     nama_gejala: 'Pertumbuhan gigi melambat',
-    cf_pakar: 0.4,
+    cf_pakar: 0.7,
   },
   {
     gejala_id: 'G08',
@@ -52,26 +52,21 @@ export const dummyGejala: Gejala[] = [
   },
   {
     gejala_id: 'G10',
-    nama_gejala: 'Pertumbuhan gigi anak melambat',
-    cf_pakar: 1.0,
-  },
-  {
-    gejala_id: 'G11',
     nama_gejala: 'Wajah terlihat lebih muda dari usianya',
     cf_pakar: 0.8,
   },
   {
-    gejala_id: 'G12',
+    gejala_id: 'G11',
     nama_gejala: 'Tinggi badan dibawah rata ukuran normal',
     cf_pakar: 1.0,
   },
   {
-    gejala_id: 'G13',
+    gejala_id: 'G12',
     nama_gejala: 'Mudah Sakit',
     cf_pakar: 0.6,
   },
   {
-    gejala_id: 'G14',
+    gejala_id: 'G13',
     nama_gejala: 'Sesak Nafas',
     cf_pakar: 0.2,
   },

@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(req: NextRequest, {params}: {params: {id: string}}) {
+export async function PATCH(req: NextRequest, {params}: {params: {id: string}}) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -16,7 +16,7 @@ export async function PUT(req: NextRequest, {params}: {params: {id: string}}) {
   try {
     const body = await req.json();
     const data = await prisma.gejala.update({
-      where: { idx: Number(params.id) },
+      where: { id: Number(params.id) },
       data: body as any,
     });
     return NextResponse.json(
@@ -47,7 +47,7 @@ export async function DELETE(req: NextRequest, {params}: {params: {id: string}})
   try {
     // const body = await req.json();
     const data = await prisma.gejala.delete({
-      where: { idx: Number(params.id) },
+      where: { id: Number(params.id) },
     });
     return NextResponse.json(
       {

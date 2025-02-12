@@ -21,6 +21,9 @@ import {
   IconUserShield,
   IconUsers,
   IconLock,
+  IconUser,
+  IconUsersGroup,
+  IconFileTime,
 } from '@tabler/icons-react'
 
 export interface NavLink {
@@ -42,16 +45,28 @@ export const sidelinks: SideLink[] = [
     icon: <IconLayoutDashboard size={18} />,
   },
   {
-    title: 'Gejala',
+    title: 'Basis Pengetahuan',
     label: '',
     href: '/ap/gejala',
     icon: <IconChecklist size={18} />,
   },
   {
-    title: 'Penyakit',
+    title: 'User Management',
+    label: '',
+    href: '/ap/user',
+    icon: <IconUser size={18} />,
+  },
+  {
+    title: 'Pasien Management',
+    label: '',
+    href: '/ap/pasien',
+    icon: <IconUsersGroup size={18} />,
+  },
+  {
+    title: 'List Riwayat',
     label: '',
     href: '/ap/penyakit',
-    icon: <IconChecklist size={18} />,
+    icon: <IconFileTime size={18} />,
   },
   // {
   //   title: 'Master Data',

@@ -15,6 +15,10 @@ interface FormPasienProps {
   status?: 'create' | 'update';
   detailData?: DataAnak;
   onSubmitDataAnak?: (data: any) => void;
+  default_tanggal_lahir?: {
+    from?: Date;
+    to?: Date;
+  };
 }
 
 interface FormAnakProps {
@@ -25,22 +29,26 @@ interface FormAnakProps {
   };
 }
 
-function FormPasien({ status = 'create', detailData, onSubmitDataAnak }: FormPasienProps) {
+function FormPasien({
+  status = 'create',
+  detailData,
+  onSubmitDataAnak,
+  default_tanggal_lahir = {
+    from: undefined,
+    to: undefined,
+  },
+}: FormPasienProps) {
   const { value: valEdit, setValue: setValEdit } = useBoolean();
   const router = useRouter();
 
   const form = useForm<FormAnakProps>({
     defaultValues: {
       nama_anak: undefined,
-      tanggal_lahir: {
-        from: undefined,
-        to: undefined,
-      },
+      tanggal_lahir: default_tanggal_lahir,
     },
   });
 
   useEffect(() => {
-    console.log('🚀 ~ useEffect ~ status:', status, detailData);
     if (status === 'update' && detailData) {
       const { nama_anak, tanggal_lahir } = detailData;
       form.reset({
@@ -56,7 +64,7 @@ function FormPasien({ status = 'create', detailData, onSubmitDataAnak }: FormPas
       //   to: new Date(tanggal_lahir),
       // });
     }
-  }, [detailData, status]);
+  }, [detailData, form, status]);
 
   const onSubmit = (data: any) => {
     // console.log("🚀 ~ onSubmit ~ data:", data)
@@ -64,7 +72,7 @@ function FormPasien({ status = 'create', detailData, onSubmitDataAnak }: FormPas
       onSubmitDataAnak(data);
     }
     // if(status === 'create'){
-      
+
     // }
   };
 
@@ -75,7 +83,7 @@ function FormPasien({ status = 'create', detailData, onSubmitDataAnak }: FormPas
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-3 justify-center pt-32"
+        className="flex flex-col gap-3 justify-center"
       >
         <div className="py-8">
           <Avatar className="h-48 w-48 mx-auto">

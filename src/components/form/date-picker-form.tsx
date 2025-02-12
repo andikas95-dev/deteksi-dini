@@ -17,6 +17,7 @@ interface DatePickerFormProps {
   labelClassName?: string;
   position?: "left" | "center"
   disabled?: boolean
+  side?: "left" | "top" | "right" | "bottom";
   // dateRange: DateRange;
   // onDateSelect: (range: { from: Date; to: Date }) => void;
 }
@@ -27,6 +28,7 @@ function DatePickerForm({
   placeholder,
   labelClassName,
   disabled = false,
+  side = "top",
   // dateRange,
   // onDateSelect,
   ...props
@@ -38,7 +40,6 @@ function DatePickerForm({
       control={form.control}
       name={name}
       render={({ field }) => {
-        // console.log('🚀 ~ field:', field);
 
         const handleDataChane = (range: { from: Date; to: Date }) => {
           // console.log('🚀 ~ range:', range);
@@ -61,6 +62,7 @@ function DatePickerForm({
                 className="w-full"
                 placeholder={placeholder}
                 disabled={disabled}
+                side={side}
                 {...props}
               />
             </FormControl>

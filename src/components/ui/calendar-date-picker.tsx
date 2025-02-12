@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // src/components/calendar-date-picker.tsx
 
 "use client";
@@ -91,6 +92,7 @@ export interface CalendarDatePickerProps
   placeholder?: string;
   onDateSelect: (range: { from: Date; to: Date }) => void;
   disabled?: boolean;
+  side?: "left" | "top" | "right" | "bottom";
 }
 
 export const CalendarDatePicker = React.forwardRef<
@@ -111,6 +113,7 @@ export const CalendarDatePicker = React.forwardRef<
       position,
       placeholder,
       disabled = false,
+      side = "top",
       ...props
     },
     ref
@@ -411,6 +414,8 @@ export const CalendarDatePicker = React.forwardRef<
     const formatWithTz = (date: Date, fmt: string) =>
       formatInTimeZone(date, timeZone, fmt);
 
+    // {console.log("🚀 ~ monthFrom:", monthFrom)}
+
     return (
       <>
         <style>
@@ -461,9 +466,9 @@ export const CalendarDatePicker = React.forwardRef<
                         onMouseOver={() => handleMouseOver("firstMonth")}
                         onMouseLeave={handleMouseLeave}
                       >
-                        {formatWithTz(date.from, "LLL")}
+                        {formatWithTz(date.from, "MMMM")}
                       </span>
-                      ,{" "}
+                      {" "}
                       <span
                         id={`firstYear-${id}`}
                         className={cn(
@@ -501,9 +506,9 @@ export const CalendarDatePicker = React.forwardRef<
                             onMouseOver={() => handleMouseOver("secondMonth")}
                             onMouseLeave={handleMouseLeave}
                           >
-                            {formatWithTz(date.to, "LLL")}
+                            {formatWithTz(date.to, "MMMM")}
                           </span>
-                          ,{" "}
+                          {" "}
                           <span
                             id={`secondYear-${id}`}
                             className={cn(
@@ -541,9 +546,9 @@ export const CalendarDatePicker = React.forwardRef<
                         onMouseOver={() => handleMouseOver("month")}
                         onMouseLeave={handleMouseLeave}
                       >
-                        {formatWithTz(date.from, "LLL")}
+                        {formatWithTz(date.from, "MMMM")}
                       </span>
-                      ,{" "}
+                      {" "}
                       <span
                         id="year"
                         className={cn(
@@ -574,6 +579,7 @@ export const CalendarDatePicker = React.forwardRef<
                 maxHeight: "var(--radix-popover-content-available-height)",
                 overflowY: "auto",
               }}
+              side={side}
             >
               <div className="flex">
                 {numberOfMonths === 2 && (
@@ -586,7 +592,7 @@ export const CalendarDatePicker = React.forwardRef<
                         className={cn(
                           "justify-start hover:bg-primary/90 hover:text-background",
                           selectedRange === label &&
-                            "bg-primary text-background hover:bg-primary/90 hover:text-background"
+                            "bg-primary text-background hover:text-background"
                         )}
                         onClick={() => {
                           selectDateRange(start, end, label);
@@ -612,8 +618,8 @@ export const CalendarDatePicker = React.forwardRef<
                         value={
                           monthFrom ? months[monthFrom.getMonth()] : undefined
                         }
-                      >
-                        <SelectTrigger className="hidden sm:flex w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
+                        >
+                        <SelectTrigger className="sm:flex w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
                           <SelectValue placeholder="Month" />
                         </SelectTrigger>
                         <SelectContent>
@@ -631,7 +637,7 @@ export const CalendarDatePicker = React.forwardRef<
                         }}
                         value={yearFrom ? yearFrom.toString() : undefined}
                       >
-                        <SelectTrigger className="hidden sm:flex w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
+                        <SelectTrigger className="sm:flex w-[122px] focus:ring-0 focus:ring-offset-0 font-medium hover:bg-accent hover:text-accent-foreground">
                           <SelectValue placeholder="Year" />
                         </SelectTrigger>
                         <SelectContent>

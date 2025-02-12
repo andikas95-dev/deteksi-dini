@@ -1,3 +1,3 @@
-import PeriksaAnak from '@/features/periksa-anak/ui/PeriksaAnak';
+import AlurPeriksa from "@/features/periksa-anak/ui/AlurPeriksa";
 
-export default PeriksaAnak
+export default AlurPeriksa;

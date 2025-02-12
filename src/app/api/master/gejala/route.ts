@@ -65,24 +65,36 @@ export async function GET(
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
 
-  if (!session) {
-    return NextResponse.json(
-      { message: 'Unauthenticated' },
-      { status: 401, statusText: 'Unauthorized' }
-    );
-  }
+  // if (!session) {
+  //   return NextResponse.json(
+  //     { message: 'Unauthenticated' },
+  //     { status: 401, statusText: 'Unauthorized' }
+  //   );
+  // }
 
   try {
     const body = await req.json();
-    console.log("🚀 ~ POST ~ body:", body)
     const data = await prisma.gejala.create({
-      data: body as any,
+      data: {
+        ...body,
+        gejala_id: "GRandom"
+      } as any,
     });
+
+    const updateData = await prisma.gejala.update({
+      data: {
+        gejala_id: `G${data.id.toString()}`,
+      },
+      where: {
+        id: data.id,
+      }
+    })
+
     return NextResponse.json(
       {
-        data,
+        updateData,
         status: 201,
       },
       { status: 201 }

@@ -1,10 +1,11 @@
-import { DotsHorizontalIcon } from '@radix-ui/react-icons'
-import { Row } from '@tanstack/react-table'
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { Row } from '@tanstack/react-table';
 
-import { CustomButton } from '@/components/customs/custom-button'
+import { CustomButton } from '@/components/customs/custom-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuIcon,
   DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -14,36 +15,46 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu';
+import { FaPenToSquare, FaTrashCan } from 'react-icons/fa6';
 
-import { labels } from './data/data'
-import { taskSchema } from './data/schema'
+import { labels } from './data/data';
+import { taskSchema } from './data/schema';
 
 interface DataTableRowActionsProps<TData> {
-  row: Row<TData>
+  row: Row<TData>;
+  handleEdit?: () => void;
+  handleDelete?: () => void;
 }
 
 export function DataTableRowActions<TData>({
   row,
+  handleEdit,
+  handleDelete,
 }: DataTableRowActionsProps<TData>) {
-  const task = taskSchema.parse(row.original)
+  // const task = taskSchema.parse(row.original)
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <CustomButton
-          variant='ghost'
-          className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
+          variant="ghost"
+          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
-          <DotsHorizontalIcon className='h-4 w-4' />
-          <span className='sr-only'>Open menu</span>
+          <DotsHorizontalIcon className="h-4 w-4" />
+          <span className="sr-only">Open menu</span>
         </CustomButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
-        <DropdownMenuSeparator />
+      <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem onClick={handleEdit}>
+          <DropdownMenuIcon>
+            <FaPenToSquare />
+          </DropdownMenuIcon>
+          Edit
+        </DropdownMenuItem>
+        {/* <DropdownMenuItem>Make a copy</DropdownMenuItem> */}
+        {/* <DropdownMenuItem>Favorite</DropdownMenuItem> */}
+        {/* <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
@@ -56,12 +67,14 @@ export function DataTableRowActions<TData>({
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuSeparator /> */}
+        <DropdownMenuItem onClick={handleDelete}>
+          <DropdownMenuIcon>
+            <FaTrashCan />
+          </DropdownMenuIcon>
           Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

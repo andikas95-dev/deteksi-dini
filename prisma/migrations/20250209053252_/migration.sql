@@ -24,14 +24,14 @@ CREATE TABLE `childs` (
 
 -- CreateTable
 CREATE TABLE `gejala` (
-    `idx` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `gejala_id` VARCHAR(191) NOT NULL,
     `nama_gejala` VARCHAR(191) NOT NULL,
     `cf_pakar` DOUBLE NOT NULL,
 
     UNIQUE INDEX `gejala_gejala_id_key`(`gejala_id`),
     INDEX `gejala_id`(`gejala_id`),
-    PRIMARY KEY (`idx`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable

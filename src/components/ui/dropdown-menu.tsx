@@ -181,6 +181,19 @@ const DropdownMenuShortcut = ({
 }
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
 
+const DropdownMenuIcon = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) => {
+  return (
+    <p
+      className={cn("text-xs tracking-widest opacity-60", className)}
+      {...props}
+    />
+  )
+}
+DropdownMenuIcon.displayName = "DropdownMenuIcon"
+
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -191,6 +204,7 @@ export {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuIcon,
   DropdownMenuGroup,
   DropdownMenuPortal,
   DropdownMenuSub,

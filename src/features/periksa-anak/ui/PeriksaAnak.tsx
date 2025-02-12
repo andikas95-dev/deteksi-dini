@@ -1,17 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import CardDataAnak, {
-  CardDataAnakProps,
-} from '@/components/components-parts/card-data-anak';
-import LayoutRoot from '@/components/shared-components/layout-root';
+import CardDataAnak from '@/components/components-parts/card-data-anak';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -20,20 +14,30 @@ import { Spinner } from '@/components/ui/spinner';
 import { locbe } from '@/lib/axiosInstance';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'usehooks-ts';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import QuestionFormArray from '../forms/QuestionFormArray';
 
-function PeriksaAnak() {
-  const session: any = useSession();
-  // console.log('🚀 ~ DaftarAnak ~ session:', session);
+interface PeriksaAnakProps {
+  handleResult?: (id: number) => void;
+}
 
-  const {mutateAsync: mutateCheckup} = useMutation({
+function PeriksaAnak({ handleResult }: PeriksaAnakProps) {
+  const session: any = useSession();
+  const router = useRouter();
+
+  if(session?.status === "unauthenticated") {
+    router.replace('/login');
+  }
+
+  const { mutateAsync: mutateCheckup } = useMutation({
     mutationFn: async (data: any) => {
-      const res = await locbe.post('/periksa', data)
-      console.log("🚀 ~ mutationFn: ~ res:", res)
+      const res = await locbe.post('/periksa', data);
+      console.log('🚀 ~ mutationFn: ~ res:', res);
+
+      return res.data;
       // prisma.childs.create({
       //   data: {
       //     user_id: session?.data?.user?.id,
@@ -46,10 +50,14 @@ function PeriksaAnak() {
       //   }
       // })
     },
-    onSuccess:() => {
-      // router.push('/data-anak')
-    }
-  })
+    onSuccess: (res) => {
+      console.log('🚀 ~ PeriksaAnak ~ res:', res);
+      // router.replace(`/periksa-anak/result/${res.data.id}`);
+      if (handleResult) {
+        handleResult(res.data.id);
+      }
+    },
+  });
 
   const form = useForm({
     defaultValues: {
@@ -59,7 +67,8 @@ function PeriksaAnak() {
   });
   console.log('🚀 ~ PeriksaAnak ~ form:', form);
 
-  const [valDrawer, _, setDrawer] = useToggle();
+  const [valDrawer, , setDrawer] = useToggle();
+  const [submitLoading, , setSubmitLoading] = useToggle();
 
   const { data: listAnak, isLoading } = useQuery({
     queryKey: ['listDataAnak', `USID - ${session?.data?.user?.id}]`],
@@ -107,79 +116,84 @@ function PeriksaAnak() {
     }
   }, [listGejala, form]);
 
-  // useEffect(() => {
-  //   if(listGejala) {
-  //     const
-  //   }
-  // }, [listGejala])
-
-  const handleSubmit = (data: any) => mutateCheckup(data);
+  const handleSubmit = async (data: any) => {
+    try {
+      setSubmitLoading(true);
+      await mutateCheckup(data);
+    } catch (error) {
+      console.log('🚀 ~ handleSubmit ~ error:', error);
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
 
   console.log('🚀 ~ PeriksaAnak ~ watchAll:', form.watch());
 
   return (
-    <LayoutRoot className="px-4">
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="py-3 flex items-center justify-between">
-            <h3>Periksa Anak</h3>
-            {/* <Button onClick={() => router.push(TAMBAH_DATA_ANAK)}>
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <div className="py-3 flex items-center justify-between">
+          <h3>Periksa Anak</h3>
+          {/* <Button onClick={() => router.push(TAMBAH_DATA_ANAK)}>
           Tambah Data
         </Button> */}
-          </div>
-          <h5 className="text-base">
-            Halaman ini digunakan untuk memastikan kesehatan anak anda
-          </h5>
+        </div>
+        <h5 className="text-base">
+          Halaman ini digunakan untuk memastikan kesehatan anak anda
+        </h5>
 
-          {form.getValues('data_anak') && (
-            <Button className="w-full" onClick={() => form.reset()}>
-              Reset
+        {form.getValues('data_anak') && (
+          <Button className="w-full" onClick={() => form.reset()}>
+            Reset
+          </Button>
+        )}
+        <Drawer onOpenChange={(val) => setDrawer(val)} open={valDrawer}>
+          <DrawerTrigger asChild>
+            {!form.getValues('data_anak') && (
+              <Button className="w-full">Pilih Anak Anda</Button>
+            )}
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Pilih Daftar Anak</DrawerTitle>
+              <DrawerDescription>
+                Pilih Anak anda yang akan di periksa
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className="h-72 overflow-y-auto">
+              <Spinner show={isLoading} />
+              {listAnak?.map((dataAnak: any, i: number) => (
+                <span
+                  key={dataAnak.id}
+                  onClick={() => {
+                    form.setValue('data_anak', dataAnak);
+                    setDrawer(false);
+                  }}
+                >
+                  <CardDataAnak data={dataAnak} />
+                </span>
+              ))}
+            </div>
+          </DrawerContent>
+        </Drawer>
+
+        {form.watch('data_anak') && (
+          <CardDataAnak data={form.getValues('data_anak')} />
+        )}
+        {listGejala && form.watch('data_anak') && (
+          <>
+            <QuestionFormArray />
+            <Button
+              type="submit"
+              className="w-full my-5"
+              isLoading={submitLoading}
+            >
+              Proses Data
             </Button>
-          )}
-          <Drawer onOpenChange={(val) => setDrawer(val)} open={valDrawer}>
-            <DrawerTrigger asChild>
-              {!form.getValues('data_anak') && (
-                <Button className="w-full">Pilih Anak Anda</Button>
-              )}
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>Pilih Daftar Anak</DrawerTitle>
-                <DrawerDescription>
-                  Pilih Anak anda yang akan di periksa
-                </DrawerDescription>
-              </DrawerHeader>
-              <div className="h-72 overflow-y-auto">
-                <Spinner show={isLoading} />
-                {listAnak?.map((dataAnak: any, i: number) => (
-                  <span
-                    key={dataAnak.id}
-                    onClick={() => {
-                      form.setValue('data_anak', dataAnak);
-                      setDrawer(false);
-                    }}
-                  >
-                    <CardDataAnak data={dataAnak} />
-                  </span>
-                ))}
-              </div>
-            </DrawerContent>
-          </Drawer>
-
-          {form.watch('data_anak') && (
-            <CardDataAnak data={form.getValues('data_anak')} />
-          )}
-          {listGejala && form.watch('data_anak') && (
-            <>
-              <QuestionFormArray />
-              <Button type="submit" className="w-full my-5">
-                Proses Data
-              </Button>
-            </>
-          )}
-        </form>
-      </FormProvider>
-    </LayoutRoot>
+          </>
+        )}
+      </form>
+    </FormProvider>
   );
 }
 

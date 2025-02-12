@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { Spinner } from '@/components/ui/spinner';
 
 import { cn } from '@/lib/utils';
 
@@ -15,6 +16,8 @@ const buttonVariants = cva(
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
           'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+        'outline-danger':
+          'border border-destructive bg-background hover:bg-destructive hover:text-destructive-foreground text-destructive',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
@@ -41,11 +44,12 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  isLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, fullWidth = false, ...props },
+    { className, variant, size, asChild = false, fullWidth = false, isLoading = false, ...props },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button';
@@ -53,8 +57,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(buttonVariants({ variant, size, className, fullWidth }), className)}
         ref={ref}
+        disabled={isLoading || props.disabled}
         {...props}
-      />
+      >
+        <Spinner show={isLoading} className="mr-2 text-white" />
+        {props.children}
+      </Comp>
     );
   }
 );

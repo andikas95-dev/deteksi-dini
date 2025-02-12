@@ -1,6 +1,6 @@
 export interface DataGejala {
-  idx: number
+  id: number
   gejala_id: string
   nama_gejala: string
-  solusi: string
+  cf_pakar: number
 }

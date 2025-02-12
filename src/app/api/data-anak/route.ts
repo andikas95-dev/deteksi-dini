@@ -1,10 +1,20 @@
+import { SessionServerProps } from '@/helpers/types/serverSession';
+import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prisma';
-import { NextApiRequest } from 'next';
-import { getToken } from 'next-auth/jwt';
+import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  // const session = await getServerSession(authOptions);
+  const session = (await getServerSession(
+    authOptions
+  )) as SessionServerProps | null;
+  // if (!session) {
+  //   return NextResponse.json(
+  //     { message: 'Unauthenticated' },
+  //     { status: 401, statusText: 'Unauthorized' }
+  //   );
+  // }
+  console.log('🚀 ~ GET ~ session test:', session);
 
   // if (!session) {
   //   return NextResponse.json(
@@ -17,19 +27,19 @@ export async function GET(req: NextRequest) {
   // return NextResponse.json({ message: 'Hello World' }, { status: 200 });
   // return NextResponse.json({ authenticated: !!session });
 
-  const searchParams = req.nextUrl.searchParams;
-  const queryUserId = Number(searchParams.get('usid')) || undefined;
+  // const searchParams = req.nextUrl.searchParams;
+  // const queryUserId = Number(searchParams.get('usid')) || undefined;
 
   try {
     const data = await prisma.childs.findMany({
       where: {
-        user_id: queryUserId,
+        user_id: Number(session?.user?.id),
       },
       orderBy: [
         {
           tanggal_lahir: 'desc',
-        }
-      ]
+        },
+      ],
     });
     // return NextResponse.json(
     //   {

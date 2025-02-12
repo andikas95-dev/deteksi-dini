@@ -1,6 +1,7 @@
 import { FormField, FormItem } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { radioValues } from '@/helpers/constants/constants';
 import React from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -14,14 +15,6 @@ function QuestionFormArray() {
     name: 'gejala',
   });
   console.log("🚀 ~ QuestionFormArray ~ fields:", fields);
-
-  const radioValues = [
-    { label: 'Tidak Tahu', value: 0 },
-    { label: 'Hampir Mungkin', value: 0.25 },
-    { label: 'Mungkin', value: 0.5 },
-    { label: 'Kemungkinan Besar', value: 0.75 },
-    { label: 'Hampir Pasti', value: 1 },
-  ];
 
   return (
     <>

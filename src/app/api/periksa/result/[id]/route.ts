@@ -1,4 +1,4 @@
-import { detail_diagnosa } from './../../../../../../node_modules/.prisma/client/index.d';
+import { detail_diagnosa, childs } from './../../../../../../node_modules/.prisma/client/index.d';
 import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
@@ -18,8 +18,7 @@ export async function GET(
   // }
 
   try {
-    // const body = await req.json();
-    const data = await prisma.diagnosa.findFirst({
+    const diagnosaData = await prisma.diagnosa.findFirst({
       where: {
         id: Number(params.id),
       },
@@ -38,9 +37,23 @@ export async function GET(
         },
       },
     });
+
+    if(!diagnosaData?.child_id){
+      throw new Error(`Gagal`)
+    }
+
+    const profilPasien = await prisma.childs.findFirst({
+      where: {
+        id: diagnosaData?.child_id
+      }
+    })
+
     return NextResponse.json(
       {
-        data,
+        data: {
+          child: profilPasien,
+          diagnosa: diagnosaData
+        },
         status: 200,
       },
       { status: 200 }
