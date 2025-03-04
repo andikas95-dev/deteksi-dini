@@ -1,7 +1,4 @@
-import { detail_diagnosa, childs } from './../../../../../../node_modules/.prisma/client/index.d';
-import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
