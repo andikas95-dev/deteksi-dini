@@ -6,7 +6,7 @@
     "dev": "env-cmd -f .env.development next dev -p 4040 --hostname 0.0.0.0",
     "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "test-build": "env-cmd -f .env.development next build",
-    "start": "next start -p 4040 --hostname 0.0.0.0",
+    "start": "npx prisma generate && next start -p 4040",
     "lint": "next lint",
     "db:mres": "env-cmd -f .env.development prisma migrate reset",
     "db:mdev": "env-cmd -f .env.development prisma migrate dev",
