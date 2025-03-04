@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     const cfResPercent = cfRes * 100
 
-    const transRes = await prisma.$transaction(async (pr) => {
+    const transRes = await prisma.$transaction(async (pr: any) => {
       const diag = await pr.diagnosa.create({
         data: {
           child_id: body.data_anak.id,
