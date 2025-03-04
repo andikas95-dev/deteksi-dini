@@ -1,7 +1,6 @@
 import { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from './prisma';
-import { Adapter } from '@auth/prisma-adapter';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { compare } from 'bcrypt';
 import useUser from '@/helpers/hooks/useUser';
@@ -16,7 +15,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  adapter: <Adapter> PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -25,7 +24,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        // console.log('🚀 ~ authorize ~ credentials:', credentials);
+        console.log('🚀 ~ authorize ~ credentials:', credentials);
         if (!credentials?.email || !credentials.password) {
           return null;
         }
@@ -49,7 +48,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        useUser.setState({ user });
+        useUser.setState({ user })
 
         return {
           // ...user,
@@ -65,7 +64,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: ({ session, user, token }) => {
-      console.log('Session Callback', { session, user, token });
+      console.log('Session Callback', { session,user, token });
       return {
         ...session,
         user: {
