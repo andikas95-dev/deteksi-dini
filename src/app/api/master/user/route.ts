@@ -57,7 +57,7 @@ export async function GET(
     //   { status: 200 }
     // );
 
-    const res = data.map((item) => ({
+    const res = data.map((item: any) => ({
       id: item.id,
       name: item.name,
       email: item.email,
