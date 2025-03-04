@@ -121,14 +121,19 @@ function FormPasien({
                 </Button>
               </>
             ) : (
+              <>
               <Button type="button" onClick={() => setValEdit(true)}>
                 Ubah
               </Button>
+              <Button type="button" variant="destructive" onClick={() => setValEdit(true)}>
+                Hapus
+              </Button>
+              </>
             )
           ) : null}
           {status === 'create' && (
             <>
-              <Button type="submit">Buat</Button>
+              <Button type="submit">Simpan</Button>
               <Button
                 type="button"
                 variant="destructive"

@@ -91,11 +91,7 @@ function PeriksaAnak({ handleResult }: PeriksaAnakProps) {
   } = useQuery({
     queryKey: ['listDataGejala', `USID - ${session?.data?.user?.id}]`],
     queryFn: async () => {
-      const res = await locbe.get('/master/gejala', {
-        params: {
-          usid: session?.data?.user?.id,
-        },
-      });
+      const res = await locbe.get('/master/gejala/periksa');
 
       const resData = res.data.map((item: any) => ({
         ...item,

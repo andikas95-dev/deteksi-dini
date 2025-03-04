@@ -2,6 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -30,17 +34,18 @@ model childs {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  Users    users?     @relation(fields: [user_id], references: [id])
+  Users    users?     @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: NoAction)
   Diagnosa diagnosa[]
 
   @@map("childs")
 }
 
 model gejala {
-  id          Int    @id @default(autoincrement())
-  gejala_id   String @unique
+  id          Int     @id @default(autoincrement())
+  gejala_id   String  @unique
   nama_gejala String
   cf_pakar    Float
+  isDisabled  Boolean @default(false)
   // solusi      String @db.LongText
 
   // Rules    Rules[]
@@ -78,7 +83,7 @@ model diagnosa {
   cf_result_percentage Float    @default(0)
   created_at           DateTime @default(now())
 
-  Childs         childs?           @relation(fields: [child_id], references: [id])
+  Childs         childs?           @relation(fields: [child_id], references: [id], onUpdate: Cascade, onDelete: NoAction)
   // Gejala Gejala @relation(fields: [gejala_id], references: [gejala_id])
   DetailDiagnosa detail_diagnosa[]
 

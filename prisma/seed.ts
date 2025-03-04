@@ -8,11 +8,11 @@ const prisma = new PrismaClient()
 async function main() {
   const password = await hash('test', 12)
   await prisma.users.upsert({
-    where: { email: 'andika@gmail.com' },
+    where: { email: 'admin@gmail.com' },
     update: {},
     create: {
-      email: 'andika@gmail.com',
-      name: 'Andika',
+      email: 'admin@gmail.com',
+      name: 'Admin',
       password,
       role: 'admin' // or any appropriate role value
     }
@@ -41,13 +41,13 @@ async function main() {
   await prisma.users.createMany({
     data: [
       {
-        email: '1@mail.com',
+        email: 'user1@gmail.com',
         name: '1',
         password,
         role: 'user'
       },
       {
-        email: '2@mail.com',
+        email: 'user2@gmail.com',
         name: '2',
         password,
         role: 'user'

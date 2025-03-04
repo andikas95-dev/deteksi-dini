@@ -8,15 +8,35 @@ import HomePageMenu from '@/components/shared-components/home-page-menu';
 import LayoutRoot from '@/components/shared-components/layout-root';
 import { Button } from '@/components/ui/button';
 import { useIsFetching } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+
+interface ExtendedUser {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string | null;
+}
+interface ExtendedSession extends Session {
+  user?: ExtendedUser;
+}
 import Image from 'next/image';
 import Link from 'next/link';
-import { createElement } from 'react';
+import { useRouter } from 'next/navigation';
+import { createElement, useEffect } from 'react';
 import { HiChevronRight } from 'react-icons/hi2';
 
 function Home() {
 
-  const isFetching = useIsFetching()
-  console.log("🚀 ~ Providers ~ isFetching:", isFetching)
+  const session = useSession() as { data: ExtendedSession | null };
+  const router = useRouter()
+
+  useEffect(() => {
+    if(session?.data?.user?.role === 'admin'){
+      router.push('/ap/dashboard')
+    }
+  },[session, router])
+
 
   return (
     <>
@@ -96,7 +116,8 @@ function Home() {
                     </Link>
                   </h3>
                   <p className="text-sm leading-4 text-gray-500">
-                    Situs dan kontak penting terkait COVID-19
+                    Hubungi kontak darurat terdekat jika terjadi sesuatu pada
+                    anak
                   </p>
                 </div>
               </div>

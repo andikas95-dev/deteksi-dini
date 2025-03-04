@@ -1,0 +1,61 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id Int [pk, increment]
+  name String [not null]
+  email String [unique, not null]
+  password String [not null]
+  role String [not null]
+  Childs childs [not null]
+}
+
+Table childs {
+  id Int [pk, increment]
+  user_id Int [not null]
+  nama_anak String [not null]
+  tanggal_lahir DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Users users
+  Diagnosa diagnosa [not null]
+}
+
+Table gejala {
+  id Int [pk, increment]
+  gejala_id String [unique, not null]
+  nama_gejala String [not null]
+  cf_pakar Float [not null]
+  isDisabled Boolean [not null, default: false]
+  DetailDiagnosa detail_diagnosa [not null]
+}
+
+Table diagnosa {
+  id Int [pk, increment]
+  child_id Int [not null]
+  cf_result Float [not null, default: 0]
+  cf_result_percentage Float [not null, default: 0]
+  created_at DateTime [default: `now()`, not null]
+  Childs childs
+  DetailDiagnosa detail_diagnosa [not null]
+}
+
+Table detail_diagnosa {
+  id Int [pk, increment]
+  diagnosa_id Int [not null]
+  gejala_id String [not null]
+  cf_pakar Float [not null]
+  cf_user Float [not null]
+  cf_combined Float [not null]
+  Diagnosa diagnosa [not null]
+  Gejala gejala [not null]
+}
+
+Ref: childs.user_id > users.id [delete: No Action]
+
+Ref: diagnosa.child_id > childs.id [delete: No Action]
+
+Ref: detail_diagnosa.diagnosa_id > diagnosa.id
+
+Ref: detail_diagnosa.gejala_id > gejala.gejala_id

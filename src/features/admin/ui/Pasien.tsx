@@ -61,7 +61,7 @@ function MasterPasien() {
   const { mutateAsync: createPasien } = useMutation({
     mutationFn: async (data: any) => {
       const res = await locbe.post('/master/pasien', data);
-      console.log('🚀 ~ mutationFn: ~ res:', res);
+      // console.log('🚀 ~ mutationFn: ~ res:', res);
       // prisma.childs.create({
       //   data: {
       //     user_id: session?.data?.user?.id,
@@ -168,13 +168,14 @@ function MasterPasien() {
       // enableHiding: false,
     },
     {
-      accessorKey: 'nama_orangtua',
+      id: "Users.name",
+      accessorKey: 'Users.name',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Nama Orang Tua" />
       ),
       cell: ({ row }) => {
         return (
-          <div className="w-[80px]">{row.original.Users.name as string}</div>
+          <div className="w-[80px]">{row.getValue("Users.name")}</div>
         );
       },
       enableSorting: false,
@@ -212,7 +213,7 @@ function MasterPasien() {
         <DataTableRowActions
           row={row}
           handleEdit={() => {
-            console.log('🚀 ~ Gejala ~ row:', row.original);
+            // console.log('🚀 ~ Gejala ~ row:', row.original);
             setDataRow(row.original as any);
             setTypeModal('update');
             setDialogCreate(true);
@@ -225,9 +226,9 @@ function MasterPasien() {
 
   // const handleSubmit = async (data: any) => {
   //   mutateGejala
-  //   console.log('🚀 ~ handleSubmit ~ data:', data);
+  // //   console.log('🚀 ~ handleSubmit ~ data:', data);
   //   // const res = await locbe.post('/master/gejala', data);
-  //   // console.log('🚀 ~ handleSubmit ~ res:', res);
+  // //   // console.log('🚀 ~ handleSubmit ~ res:', res);
   // }
 
   if (isLoadingPasien || isFetchingPasien) {

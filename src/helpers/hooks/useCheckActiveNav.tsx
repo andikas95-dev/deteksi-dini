@@ -6,7 +6,7 @@ export default function useCheckActiveNav() {
 
   const checkActiveNav = (nav: string) => {
     const pathArray = pathname.split('/').filter((item) => item !== '')
-    console.log("🚀 ~ checkActiveNav ~ pathArray:", pathArray)
+    // console.log("🚀 ~ checkActiveNav ~ pathArray:", pathArray)
 
     if (nav === '/' && pathArray.length < 1) return true
 

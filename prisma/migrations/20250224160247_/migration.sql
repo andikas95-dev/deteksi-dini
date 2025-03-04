@@ -28,6 +28,7 @@ CREATE TABLE `gejala` (
     `gejala_id` VARCHAR(191) NOT NULL,
     `nama_gejala` VARCHAR(191) NOT NULL,
     `cf_pakar` DOUBLE NOT NULL,
+    `isDisabled` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `gejala_gejala_id_key`(`gejala_id`),
     INDEX `gejala_id`(`gejala_id`),

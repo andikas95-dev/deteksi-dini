@@ -65,7 +65,7 @@ export const sidelinks: SideLink[] = [
   {
     title: 'List Riwayat',
     label: '',
-    href: '/ap/penyakit',
+    href: '/ap/riwayat',
     icon: <IconFileTime size={18} />,
   },
   // {

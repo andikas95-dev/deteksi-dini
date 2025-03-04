@@ -5,12 +5,18 @@ import { DataTableRowActions } from '@/components/customs/data-table/data-table-
 import LoadingPage from '@/components/shared-components/loading-page';
 import { DataGejala } from '@/helpers/types/gejala';
 import { locbe } from '@/lib/axiosInstance';
-import { useIsFetching, useIsMutating, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  useIsFetching,
+  useIsMutating,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { useToggle } from 'usehooks-ts';
 import GejalaForm from '../forms/GejalaForm';
+import { Badge } from '@/components/ui/badge';
 
 function Gejala() {
   // const [listGejala, setListGejala] = useState<{
@@ -23,8 +29,8 @@ function Gejala() {
   //   data: [],
   // });
 
-  const loadingMutate = useIsMutating()
-  const loadingFetch = useIsFetching()
+  const loadingMutate = useIsMutating();
+  const loadingFetch = useIsFetching();
 
   const [dialogCreate, , setDialogCreate] = useToggle();
   const [dataRow, setDataRow] = useState();
@@ -123,7 +129,7 @@ function Gejala() {
       return res;
     },
     onSuccess: () => {
-      toast.success('Berhasil menghapus data basis pengetahuan');
+      toast.success('Berhasil Merubah data basis pengetahuan');
       refetchGejala();
       // router.push('/data-anak');
     },
@@ -158,6 +164,23 @@ function Gejala() {
       cell: ({ row }) => (
         <div className="w-[80px]">{row.getValue('cf_pakar')}</div>
       ),
+      enableSorting: false,
+      // enableHiding: false,
+    },
+    {
+      accessorKey: 'isDisabled',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
+      cell: ({ row }) => {
+        const status = row.getValue('isDisabled');
+        console.log('🚀 ~ Gejala ~ status:', status);
+        return (
+          <Badge variant={status ? 'destructive' : 'active'}>
+            {status ? 'Tidak Aktif' : 'Aktif'}
+          </Badge>
+        );
+      },
       enableSorting: false,
       // enableHiding: false,
     },
@@ -262,7 +285,8 @@ function Gejala() {
             setTypeModal('update');
             setDialogCreate(true);
           }}
-          handleDelete={() => mutateDeleteGejala(row.original)}
+          handleActive={() => mutateDeleteGejala(row.original)}
+          textActive={row.original.isDisabled ? 'Aktifkan' : 'Nonaktifkan'}
         />
       ),
     },
@@ -275,8 +299,8 @@ function Gejala() {
   //   // console.log('🚀 ~ handleSubmit ~ res:', res);
   // }
 
-  if(isLoadingGejala || isFetchingGejala){
-    return <LoadingPage show />
+  if (isLoadingGejala || isFetchingGejala) {
+    return <LoadingPage show />;
   }
 
   return (

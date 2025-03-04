@@ -24,7 +24,7 @@ export function DataTableViewOptions<TData>({
       (column) =>
         typeof column.accessorFn !== 'undefined' && column.getCanHide()
     );
-  console.log('🚀 ~ dataTest ~ column: ~ table header:', dataTest);
+  // console.log('🚀 ~ dataTest ~ column: ~ table header:', dataTest);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -47,7 +47,7 @@ export function DataTableViewOptions<TData>({
               typeof column.accessorFn !== 'undefined' && column.getCanHide()
           )
           .map((column) => {
-            console.log('🚀 ~ column:', column);
+            // console.log('🚀 ~ column:', column);
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}

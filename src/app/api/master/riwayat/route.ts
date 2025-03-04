@@ -1,5 +1,7 @@
 import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prisma';
+import { hash } from 'bcrypt';
+import { truncate } from 'fs/promises';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { NextResponse, type NextRequest } from 'next/server';
@@ -28,11 +30,10 @@ import { NextResponse, type NextRequest } from 'next/server';
 // }
 
 type ResponseData = {
-  message: string
-}
+  message: string;
+};
 
-export async function GET(
-) {
+export async function GET() {
   // const session = await getServerSession(authOptions);
 
   // if (!session) {
@@ -47,8 +48,11 @@ export async function GET(
   // return NextResponse.json({ authenticated: !!session });
 
   try {
-    const data = await prisma.gejala.findMany();
-    console.log("🚀 ~ data:", data)
+    const res = await prisma.diagnosa.findMany({
+      include: {
+        Childs: true,
+      },
+    });
     // return NextResponse.json(
     //   {
     //     data,
@@ -56,7 +60,15 @@ export async function GET(
     //   },
     //   { status: 200 }
     // );
-    return NextResponse.json(data, { status: 200 });
+
+    // const res = data.map((item) => ({
+    //   id: item.id,
+    //   name: item.name,
+    //   email: item.email,
+    //   role: item.role,
+    // }))
+
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: (error as Error).message },
@@ -65,45 +77,41 @@ export async function GET(
   }
 }
 
-export async function POST(req: NextRequest) {
-  // const session = await getServerSession(authOptions);
+// export async function POST(req: NextRequest) {
+//   // const session = await getServerSession(authOptions);
 
-  // if (!session) {
-  //   return NextResponse.json(
-  //     { message: 'Unauthenticated' },
-  //     { status: 401, statusText: 'Unauthorized' }
-  //   );
-  // }
+//   // if (!session) {
+//   //   return NextResponse.json(
+//   //     { message: 'Unauthenticated' },
+//   //     { status: 401, statusText: 'Unauthorized' }
+//   //   );
+//   // }
 
-  try {
-    const body = await req.json();
-    const data = await prisma.gejala.create({
-      data: {
-        ...body,
-        gejala_id: "GRandom"
-      } as any,
-    });
+//   try {
+//     const body = await req.json();
+//     console.log('🚀 ~ POST ~ body POST PASIEN:', body);
+//     const res = await prisma.childs.create({
+//       data: {
+//         ...body,
+//         nama_anak: body.nama_anak,
+//         user_id: Number(body.user_id),
+//         tanggal_lahir: new Date(body.tanggal_lahir),
+//         createdAt: new Date(new Date().setFullYear(new Date().getFullYear())),
+//         updatedAt: new Date(new Date().setFullYear(new Date().getFullYear())),
+//       },
+//     });
 
-    const updateData = await prisma.gejala.update({
-      data: {
-        gejala_id: `G${data.id.toString()}`,
-      },
-      where: {
-        id: data.id,
-      }
-    })
-
-    return NextResponse.json(
-      {
-        updateData,
-        status: 201,
-      },
-      { status: 201 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { message: (error as Error).message },
-      { status: 500, statusText: 'Internal Server Error' }
-    );
-  }
-}
+//     return NextResponse.json(
+//       {
+//         res,
+//         status: 201,
+//       },
+//       { status: 201 }
+//     );
+//   } catch (error) {
+//     return NextResponse.json(
+//       { message: (error as Error).message },
+//       { status: 400, statusText: 'Wrong Insert Data' }
+//     );
+//   }
+// }

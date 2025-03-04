@@ -40,7 +40,7 @@ function ListRiwayatPeriksa({ selectedData, setSelectedRiwayat }: ListRiwayatPer
     },
     enabled: !!selectedData?.child?.id,
   });
-  console.log("🚀 ~ ListRiwayatPeriksa ~ listTanggalRiwayat:", listTanggalRiwayat)
+  // console.log("🚀 ~ ListRiwayatPeriksa ~ listTanggalRiwayat:", listTanggalRiwayat)
 
   const {
     data: dataDiagnosa,
@@ -54,7 +54,7 @@ function ListRiwayatPeriksa({ selectedData, setSelectedRiwayat }: ListRiwayatPer
     },
     enabled: !!selectedData?.diagnosa?.id,
   });
-    console.log("🚀 ~ ListRiwayatPeriksa ~ dataDiagnosa:", dataDiagnosa)
+    // console.log("🚀 ~ ListRiwayatPeriksa ~ dataDiagnosa:", dataDiagnosa)
 
   return (
     <>

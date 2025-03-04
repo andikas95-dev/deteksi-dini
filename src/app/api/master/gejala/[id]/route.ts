@@ -37,17 +37,24 @@ export async function PATCH(req: NextRequest, {params}: {params: {id: string}}) 
 export async function DELETE(req: NextRequest, {params}: {params: {id: string}}) {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
-    return NextResponse.json(
-      { message: 'Unauthenticated' },
-      { status: 401, statusText: 'Unauthorized' }
-    );
-  }
+  // if (!session) {
+  //   return NextResponse.json(
+  //     { message: 'Unauthenticated' },
+  //     { status: 401, statusText: 'Unauthorized' }
+  //   );
+  // }
 
   try {
     // const body = await req.json();
-    const data = await prisma.gejala.delete({
+    const getData = await prisma.gejala.findFirst({
+      where: { id: Number(params.id) }
+    })
+
+    const data = await prisma.gejala.update({
       where: { id: Number(params.id) },
+      data: {
+        isDisabled: !getData?.isDisabled,
+      }
     });
     return NextResponse.json(
       {

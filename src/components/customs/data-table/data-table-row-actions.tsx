@@ -16,7 +16,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { FaPenToSquare, FaTrashCan } from 'react-icons/fa6';
+import { FaPenToSquare, FaTrashCan, FaMagnifyingGlass } from 'react-icons/fa6';
 
 import { labels } from './data/data';
 import { taskSchema } from './data/schema';
@@ -25,12 +25,18 @@ interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
   handleEdit?: () => void;
   handleDelete?: () => void;
+  handleDetail?: () => void;
+  handleActive?: () => void;
+  textActive?: string
 }
 
 export function DataTableRowActions<TData>({
   row,
   handleEdit,
   handleDelete,
+  handleDetail,
+  handleActive,
+  textActive
 }: DataTableRowActionsProps<TData>) {
   // const task = taskSchema.parse(row.original)
 
@@ -46,34 +52,38 @@ export function DataTableRowActions<TData>({
         </CustomButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem onClick={handleEdit}>
-          <DropdownMenuIcon>
-            <FaPenToSquare />
-          </DropdownMenuIcon>
-          Edit
-        </DropdownMenuItem>
-        {/* <DropdownMenuItem>Make a copy</DropdownMenuItem> */}
-        {/* <DropdownMenuItem>Favorite</DropdownMenuItem> */}
-        {/* <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSeparator /> */}
-        <DropdownMenuItem onClick={handleDelete}>
-          <DropdownMenuIcon>
-            <FaTrashCan />
-          </DropdownMenuIcon>
-          Delete
-        </DropdownMenuItem>
+        {handleEdit && (
+          <DropdownMenuItem onClick={handleEdit}>
+            <DropdownMenuIcon>
+              <FaPenToSquare />
+            </DropdownMenuIcon>
+            Edit
+          </DropdownMenuItem>
+        )}
+        {handleActive && (
+          <DropdownMenuItem onClick={handleActive}>
+            <DropdownMenuIcon>
+              <FaPenToSquare />
+            </DropdownMenuIcon>
+            {textActive}
+          </DropdownMenuItem>
+        )}
+        {handleDelete && (
+          <DropdownMenuItem onClick={handleDelete}>
+            <DropdownMenuIcon>
+              <FaTrashCan />
+            </DropdownMenuIcon>
+            Delete
+          </DropdownMenuItem>
+        )}
+        {handleDetail && (
+          <DropdownMenuItem onClick={handleDetail}>
+            <DropdownMenuIcon>
+            <FaMagnifyingGlass />
+            </DropdownMenuIcon>
+            Detail
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
