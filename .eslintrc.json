@@ -1,4 +1,3 @@
 {
-  "extends": "next/core-web-vitals",
-  "noImplicitAny": false
+  "extends": "next/core-web-vitals"
 }
