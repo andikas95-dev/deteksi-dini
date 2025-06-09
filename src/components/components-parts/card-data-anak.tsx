@@ -35,7 +35,7 @@ function CardDataAnak({ data }: CardDataAnakProps) {
             <BabyIcon />
           </AvatarIcon>
           <AvatarFallback>
-            {data ? getInitials(data.nama_anak) : ''}
+            {data ? getInitials(data?.nama_anak ?? "") : ''}
           </AvatarFallback>
         </Avatar>
         <div>
@@ -44,7 +44,7 @@ function CardDataAnak({ data }: CardDataAnakProps) {
           </p>
           <p>
             Tanggal Lahir:{' '}
-            {data ? format(data.tanggal_lahir, 'dd MMM yyyy') : ''}
+            {data ? format(data?.tanggal_lahir ?? new Date, 'dd MMM yyyy') : ''}
           </p>
         </div>
       </CardContent>
