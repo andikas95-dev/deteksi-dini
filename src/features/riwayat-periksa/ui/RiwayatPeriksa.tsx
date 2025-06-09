@@ -8,60 +8,39 @@ import ListRiwayatPeriksa from '../components/ListRiwayatPeriksa';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import useRiwayatPeriksa from '@/helpers/hooks/useRiwayatPeriksa';
 
 function RiwayatPeriksa() {
   const session: any = useSession();
   const router = useRouter();
 
+  const { child, setChild, setDiagnosa } = useRiwayatPeriksa();
+
   if (session?.status === 'unauthenticated') {
     router.replace('/login');
   }
 
-  const [dataRiwayat, setDataRiwayat] = useState({
-    child: null,
-    diagnosa: null,
-  });
-  console.log('🚀 ~ RiwayatPeriksa ~ dataRiwayat:', dataRiwayat);
+  // const [dataRiwayat, setDataRiwayat] = useState({
+  //   child: null,
+  //   diagnosa: null,
+  // });
+  // console.log('🚀 ~ RiwayatPeriksa ~ dataRiwayat:', dataRiwayat);
 
   return (
     <LayoutRoot className="px-4">
       <div className="py-3 flex items-center">
-        <h3>RIWAYAT PERIKSA ANAK</h3>
+        <h3>RIWAYAT PERIKSA ANAK {1%2}</h3>
       </div>
-      <ListAnakUntukRiwayat
-        selectedData={dataRiwayat}
-        setSelectedData={(dataAnak) => {
-          console.log('🚀 ~ RiwayatPeriksa ~ dataAnak:', dataAnak);
-          setDataRiwayat((prev) => ({
-            ...prev,
-            child: dataAnak,
-          }));
-          // setShowPage('list-riwayat');
-        }}
-        onReset={() => {
-          setDataRiwayat({
-            child: null,
-            diagnosa: null,
-          });
-        }}
-      />
-      {dataRiwayat?.child && (
+      <ListAnakUntukRiwayat />
+      {child && (
         <ListRiwayatPeriksa
-          selectedData={dataRiwayat}
-          setSelectedRiwayat={(dataRiwayat) => {
-            console.log('🚀 ~ RiwayatPeriksa ~ dataRiwayat:', dataRiwayat);
-            setDataRiwayat((prev) => ({
-              ...prev,
-              diagnosa: dataRiwayat,
-            }));
-            // setShowPage('detail-riwayat');
-          }}
-          // onClickBack={() => {
-          //   setShowPage('list-anak');
-          //   setDataRiwayat({
-          //     child: null,
-          //     diagnosa: null,
-          //   });
+          // selectedData={dataRiwayat}
+          // setSelectedRiwayat={(dataRiwayat) => {
+          //   console.log('🚀 ~ RiwayatPeriksa ~ dataRiwayat:', dataRiwayat);
+          //   setDataRiwayat((prev) => ({
+          //     ...prev,
+          //     diagnosa: dataRiwayat,
+          //   }));
           // }}
         />
       )}

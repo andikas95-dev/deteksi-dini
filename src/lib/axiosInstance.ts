@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.NEXTAUTH_URL || 'https://deteksi-dini.vercel.app';
+const baseURL = process.env.NEXTAUTH_URL || 'http://localhost:4040';
 
 export const locbe = axios.create({
   baseURL: `${baseURL}/api`,

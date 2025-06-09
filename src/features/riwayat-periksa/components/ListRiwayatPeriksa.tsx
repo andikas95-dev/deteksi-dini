@@ -12,57 +12,87 @@ import {
 } from '@/components/ui/drawer';
 import { Spinner } from '@/components/ui/spinner';
 import HasilPeriksa from '@/features/periksa-anak/components/HasilPeriksa';
+import { radioValues } from '@/helpers/constants/constants';
+import useRiwayatPeriksa from '@/helpers/hooks/useRiwayatPeriksa';
 import { locbe } from '@/lib/axiosInstance';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 import { useToggle } from 'usehooks-ts';
+import HasilPeriksaRiwayat from './HasilPeriksaRiwayat';
 
 interface ListRiwayatPeriksaProps {
   selectedData: any;
   setSelectedRiwayat: (data: any) => void;
 }
 
-function ListRiwayatPeriksa({ selectedData, setSelectedRiwayat }: ListRiwayatPeriksaProps) {
+function ListRiwayatPeriksa() {
   const session: any = useSession();
+  const { child, diagnosa, setDiagnosa, setDetailDiagnosa } =
+    useRiwayatPeriksa();
+
   const [drawerListRiwayat, , setDrawerListRiwayat] = useToggle();
 
   const { data: listTanggalRiwayat, isLoading } = useQuery({
-    queryKey: ['ListRiwayat', `ChildId - ${selectedData?.child?.id}]`],
+    queryKey: ['ListRiwayat', `ChildId - ${child?.id}]`],
     queryFn: async () => {
       const res = await locbe.get('/diagnosa', {
         params: {
-          cid: selectedData?.child?.id,
+          cid: child?.id,
         },
       });
 
       return res.data;
     },
-    enabled: !!selectedData?.child?.id,
+    enabled: !!child?.id,
   });
   // console.log("🚀 ~ ListRiwayatPeriksa ~ listTanggalRiwayat:", listTanggalRiwayat)
 
-  const {
-    data: dataDiagnosa,
-    isFetched: dataDiagnosaFatched,
-  } = useQuery({
-    queryKey: ['Riwayat Hasil Diagnosa', `Diagnosa ID - ${selectedData?.diagnosa?.id}]`],
+  const { isFetched: dataDiagnosaFatched } = useQuery({
+    queryKey: ['Riwayat Hasil Diagnosa', `Diagnosa ID - ${diagnosa?.id}]`],
     queryFn: async () => {
-      const res = await locbe.get(`/periksa/result/${selectedData?.diagnosa?.id}`, {});
+      try {
+        const res = await locbe.get(`/periksa/result/${diagnosa?.id}`, {});
 
-      return res.data;
+        if (res.status !== 200) {
+          return new Error('Gagal mendapatkan data hasil pemeriksaan');
+        }
+
+        const detailDiagnosa = res?.data?.data?.diagnosa?.DetailDiagnosa;
+        const returnDetail = detailDiagnosa.map((item: any) => {
+          const jawaban = radioValues.find(
+            (radioItem) => radioItem.value === item.cf_user
+          );
+
+          return {
+            nama_gejala: item.Gejala.nama_gejala,
+            jawaban: jawaban?.label,
+            cf_combined: item.cf_combined,
+            cf_user: item.cf_user,
+            cf_pakar: item.cf_pakar,
+          };
+        });
+
+        setDetailDiagnosa(returnDetail);
+
+        return res.data;
+      } catch (error) {
+        toast.error('Gagal mendapatkan data hasil pemeriksaan');
+      }
     },
-    enabled: !!selectedData?.diagnosa?.id,
+    enabled: !!diagnosa?.id,
   });
-    // console.log("🚀 ~ ListRiwayatPeriksa ~ dataDiagnosa:", dataDiagnosa)
 
   return (
     <>
       <h4>Data Diagnosa</h4>
-      {selectedData.diagnosa && dataDiagnosaFatched && <HasilPeriksa dataDiagnosa={dataDiagnosa} />}
+      {diagnosa && dataDiagnosaFatched && <HasilPeriksaRiwayat />}
       <Drawer open={drawerListRiwayat} onOpenChange={setDrawerListRiwayat}>
         <DrawerTrigger asChild>
-          {!selectedData.diagnosa && <Button className="w-full">Pilih Tanggal Pemeriksaan</Button>}
+          {!diagnosa && (
+            <Button className="w-full">Pilih Tanggal Pemeriksaan</Button>
+          )}
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
@@ -73,11 +103,15 @@ function ListRiwayatPeriksa({ selectedData, setSelectedRiwayat }: ListRiwayatPer
           </DrawerHeader>
           <div className="space-y-3 px-3 h-72 overflow-y-auto">
             {listTanggalRiwayat?.map((dataRiwayat: any, i: number) => (
-              <Card key={dataRiwayat.id} className='cursor-pointer hover:bg-primary/10' onClick={() => {
-                setSelectedRiwayat(dataRiwayat)
-                setDrawerListRiwayat(false)
-              }}>
-                <CardContent className='flex justify-center items-center p-3'>
+              <Card
+                key={dataRiwayat.id}
+                className="cursor-pointer hover:bg-primary/10"
+                onClick={() => {
+                  setDiagnosa(dataRiwayat);
+                  setDrawerListRiwayat(false);
+                }}
+              >
+                <CardContent className="flex justify-center items-center p-3">
                   <p>{format(dataRiwayat.created_at, 'dd MMMM yyyy HH:mm')}</p>
                 </CardContent>
               </Card>

@@ -5,13 +5,15 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Card, CardContent } from '@/components/ui/card';
-import useHasilPeriksa from '@/helpers/hooks/useHasilPeriksa';
+import { radioValues } from '@/helpers/constants/constants';
+import useRiwayatPeriksa from '@/helpers/hooks/useRiwayatPeriksa';
 import { cn } from '@/lib/utils';
+import React from 'react';
 
-function HasilPeriksa() {
-  const { diagnosa, detailDiagnosa } = useHasilPeriksa();
-  console.log('🚀 ~ HasilPeriksa ~ detailDiagnosa:', detailDiagnosa);
-  console.log('🚀 ~ HasilPeriksa ~ diagnosa:', diagnosa);
+function HasilPeriksaRiwayat() {
+  const { diagnosa, detailDiagnosa } = useRiwayatPeriksa();
+  console.log('🚀 ~ HasilPeriksaRiwayat ~ detailDiagnosa:', detailDiagnosa);
+  console.log('🚀 ~ HasilPeriksaRiwayat ~ diagnosa:', diagnosa);
 
   return (
     <Accordion type="multiple" defaultValue={['hasil-konsultasi']}>
@@ -22,8 +24,8 @@ function HasilPeriksa() {
             className={cn([
               'text-white',
               {
-                'bg-red-700': Number(diagnosa?.cf_result_percentage ?? 0) >= 50,
-                'bg-green-700': Number(diagnosa?.cf_result_percentage ?? 0) < 50,
+                'bg-red-700': (Number(diagnosa?.cf_result_percentage) ?? 0) >= 50,
+                'bg-green-700': (Number(diagnosa?.cf_result_percentage) ?? 0) < 50,
               },
             ])}
           >
@@ -35,7 +37,7 @@ function HasilPeriksa() {
                 tersebut teridentifikasi:
               </p>
               <h5 className="font-bold text-center text-xl underline">
-                {Number(diagnosa?.cf_result_percentage ?? 0) >= 50
+                {(Number(diagnosa?.cf_result_percentage) ?? 0) >= 50
                   ? 'STUNTING'
                   : 'TIDAK STUNTING'}
               </h5>
@@ -62,4 +64,4 @@ function HasilPeriksa() {
   );
 }
 
-export default HasilPeriksa;
+export default HasilPeriksaRiwayat;

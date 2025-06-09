@@ -10,19 +10,22 @@ import Link from 'next/link';
 import BabyIcon from '@/components/assets//icons/baby-icon';
 import { format } from 'date-fns';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
+import { ChildData } from '@/helpers/hooks/useRiwayatPeriksa';
+import { Spinner } from '../ui/spinner';
 
 export interface CardDataAnakProps {
-  data?: {
-    id: number;
-    user_id: number;
-    nama_anak: string;
-    tanggal_lahir: string;
-    berat_badan: number;
-    tinggi_badan: number;
-  } | null;
+  data?: ChildData | null;
 }
 
 function CardDataAnak({ data }: CardDataAnakProps) {
+  if (!data) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner show />
+      </div>
+    );
+  }
+
   return (
     <Card className="hover:bg-primary/10 cursor-pointer my-3">
       <CardContent className="flex gap-5 items-center p-4">
