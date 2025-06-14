@@ -91,7 +91,7 @@ function Home() {
             <h2 className="text-lg sm:text-xl font-semibold sm:mx-6">
               Cek Sekarang Apakah Anak Anda sedang dalam kondisi Stunting
             </h2>
-            <Link href="/provinces" passHref>
+            <Link href="/periksa-anak" passHref>
               <Button className="mt-4 block rounded-full" size="lg" fullWidth>
                 Telusuri sekarang
               </Button>
@@ -111,7 +111,7 @@ function Home() {
                 </div>
                 <div className="ml-4 space-y-1">
                   <h3 className="text-base leading-5 font-semibold">
-                    <Link href="/kontak-darurat" className="helper-link-cover">
+                    <Link href="https://wa.me/6281333653541?" className="helper-link-cover">
                       Kontak Darurat
                     </Link>
                   </h3>
