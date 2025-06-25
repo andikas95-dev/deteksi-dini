@@ -122,12 +122,16 @@ function FormPasien({
               </>
             ) : (
               <>
-              <Button type="button" onClick={() => setValEdit(true)}>
-                Ubah
-              </Button>
-              <Button type="button" variant="destructive" onClick={() => setValEdit(true)}>
-                Hapus
-              </Button>
+                <Button type="button" onClick={() => setValEdit(true)}>
+                  Ubah
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => setValEdit(true)}
+                >
+                  Hapus
+                </Button>
               </>
             )
           ) : null}

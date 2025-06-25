@@ -14,6 +14,9 @@ import DetailRiwayatPeriksa from './DetailRiwayatPeriksa';
 import { Button } from '@/components/ui/button';
 import LoadingPage from '@/components/shared-components/loading-page';
 import { Spinner } from '@/components/ui/spinner';
+import HasilPeriksaPdf from '@/features/periksa-anak/components/HasilPeriksaPdf';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { format } from 'date-fns';
 
 interface ModalDetailRiwayatProps {
   open: boolean;
@@ -46,6 +49,24 @@ function ModalDetailRiwayat({
           {data && <DetailRiwayatPeriksa data={data} />}
         </div>
         <DialogFooter>
+          <Button asChild variant="secondary">
+            <PDFDownloadLink
+              document={
+                <HasilPeriksaPdf
+                  data={{
+                    detailDiagnosa: data?.detail_diagnosa,
+                    child: data?.info_anak,
+                    diagnosa: data?.diagnosa,
+                  }}
+                />
+              }
+              fileName={`Hasil_Pemeriksaan_${data?.info_anak?.nama_anak}_${format(new Date(), "ddMMyyyyHHmmss")}.pdf`}
+            >
+              {({ loading }) =>
+                loading ? 'Generating PDF...' : 'Download PDF'
+              }
+            </PDFDownloadLink>
+          </Button>
           <Button onClick={() => onOpenChange(false)}>Tutup</Button>
         </DialogFooter>
       </DialogContent>

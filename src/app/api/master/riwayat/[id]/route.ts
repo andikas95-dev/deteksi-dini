@@ -1,3 +1,4 @@
+import { radioValues } from '@/helpers/constants/constants';
 import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prisma';
 import { hash } from 'bcrypt';
@@ -26,19 +27,29 @@ export async function GET(
       where: {
         id: Number(params.id),
       },
-    })
+    });
     const resChildInfo = await prisma.childs.findFirstOrThrow({
       where: {
         id: resDiagnosa.child_id,
-      }
-    })
+      },
+    });
     const resDetailDiagnosa = await prisma.detail_diagnosa.findMany({
       where: {
         diagnosa_id: Number(params.id),
       },
       include: {
         Gejala: true,
-      }
+      },
+    });
+    const returnDetailDiagnosa = resDetailDiagnosa.map((item) => {
+      const jawaban = radioValues.find(
+        (radioItem) => radioItem.value === item.cf_user
+      );
+      return {
+        ...item,
+        nama_gejala: item.Gejala.nama_gejala,
+        jawaban: jawaban?.label,
+      };
     });
     // console.log("🚀 ~ resDetailDiagnosa:", resDetailDiagnosa)
     // return NextResponse.json(
@@ -56,11 +67,14 @@ export async function GET(
     //   role: item.role,
     // }))
 
-    return NextResponse.json({
-      info_anak: resChildInfo,
-      diagnosa: resDiagnosa,
-      detail_diagnosa: resDetailDiagnosa,
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        info_anak: resChildInfo,
+        diagnosa: resDiagnosa,
+        detail_diagnosa: returnDetailDiagnosa,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: (error as Error).message },

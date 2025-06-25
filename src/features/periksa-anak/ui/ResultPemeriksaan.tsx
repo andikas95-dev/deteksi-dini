@@ -21,6 +21,7 @@ import useRiwayatPeriksa from '@/helpers/hooks/useRiwayatPeriksa';
 import useHasilPeriksa from '@/helpers/hooks/useHasilPeriksa';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import HasilPeriksaPdf from '../components/HasilPeriksaPdf';
+import { format } from 'date-fns';
 
 interface ResultPemeriksaanProps {
   id?: number;
@@ -121,7 +122,7 @@ function ResultPemeriksaan({ id, onBack }: ResultPemeriksaanProps) {
                   }}
                 />
               }
-              fileName={`Hasil_Pemeriksaan_${child?.nama_anak}.pdf`}
+              fileName={`Hasil_Pemeriksaan_${child?.nama_anak}_${format(new Date(), "ddMMyyyyHHmmss")}.pdf`}
             >
               {({ loading }) =>
                 loading ? 'Generating PDF...' : 'Download PDF'
