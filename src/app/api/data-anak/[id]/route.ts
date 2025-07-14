@@ -64,3 +64,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     );
   }
 }
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    const res = await prisma.childs.delete({
+      where: {
+        id: Number(params.id),
+      },
+    });
+
+    return NextResponse.json(res, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: (error as Error).message },
+      { status: 500, statusText: 'Internal Server Error' }
+    );
+  }
+}

@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 function TambahDataAnak() {
   const [date, setDate] = useState({
@@ -39,6 +40,12 @@ function TambahDataAnak() {
     },
     onSuccess: () => {
       router.push('/data-anak');
+      return toast.success('Data Anak Berhasil Ditambahkan');
+    },
+    onError: (error: any) => {
+      return toast.error(
+        error?.response?.data?.message || 'Terjadi kesalahan saat menambahkan data anak'
+      );
     },
   });
 

@@ -19,6 +19,7 @@ interface FormPasienProps {
     from?: Date;
     to?: Date;
   };
+  handleDelete?: () => void;
 }
 
 interface FormAnakProps {
@@ -37,6 +38,7 @@ function FormPasien({
     from: undefined,
     to: undefined,
   },
+  handleDelete,
 }: FormPasienProps) {
   const { value: valEdit, setValue: setValEdit } = useBoolean();
   const router = useRouter();
@@ -122,18 +124,24 @@ function FormPasien({
               </>
             ) : (
               <>
-                <Button type="button" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  setValEdit(true)
-                }}
+                <Button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setValEdit(true);
+                  }}
                 >
                   Ubah
                 </Button>
                 <Button
                   type="button"
                   variant="destructive"
-                  onClick={() => setValEdit(true)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (handleDelete) {
+                      handleDelete();
+                    }
+                  }}
                 >
                   Hapus
                 </Button>

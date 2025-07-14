@@ -50,6 +50,20 @@ function DetailDataAnak() {
     }
   })
 
+  const {mutateAsync: mutateDeleteData } = useMutation({
+    mutationFn: async () => {
+      const res = await locbe.delete(`/data-anak/${childId}`,)
+      return res.data
+    },
+    onSuccess: () => {
+      router.push('/data-anak')
+      return toast.success("Data Anak Berhasil Di Hapus")
+    },
+    onError: (error: any) => {
+      return toast.error(error?.response?.data?.message || "Terjadi kesalahan saat mengupdate data anak")
+    }
+  })
+
 
   return (
     <LayoutRoot className="px-4">
@@ -61,7 +75,7 @@ function DetailDataAnak() {
         <h3 className="text-2xl">Detail Data Anak</h3>
       </div>
       <Separator className="my-3" />
-      <FormPasien status="update" detailData={detailDataAnak} onSubmitDataAnak={(data) => mutateDataAnak(data)}  />
+      <FormPasien status="update" detailData={detailDataAnak} onSubmitDataAnak={(data) => mutateDataAnak(data)} handleDelete={() => mutateDeleteData()}  />
     </LayoutRoot>
   );
 }
