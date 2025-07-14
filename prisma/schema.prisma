@@ -56,26 +56,6 @@ model gejala {
   @@map("gejala")
 }
 
-// model Penyakit {
-//   idx           Int     @id @default(autoincrement())
-//   penyakit_id   String  @unique
-//   nama_penyakit String
-//   deskripsi     String  @db.LongText
-//   Rules         Rules[]
-
-//   @@index([penyakit_id], name: "penyakit_id")
-// }
-
-// model Rules {
-//   id          Int    @id @default(autoincrement())
-//   gejala_id   String
-//   // penyakit_id String
-//   cf_pakar    Float
-
-//   Gejala   Gejala   @relation(fields: [gejala_id], references: [gejala_id])
-//   // Penyakit Penyakit @relation(fields: [penyakit_id], references: [penyakit_id])
-// }
-
 model diagnosa {
   id                   Int      @id @default(autoincrement())
   child_id             Int
