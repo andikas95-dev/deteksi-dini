@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useParams, useRouter } from 'next/navigation';
 import { IoCaretBackCircleOutline } from 'react-icons/io5';
+import { toast } from 'sonner';
 
 function DetailDataAnak() {
   const router = useRouter();
@@ -35,9 +36,17 @@ function DetailDataAnak() {
         nama_anak: data.nama_anak,
         tanggal_lahir: data.tanggal_lahir.from,
       })
+      return res.data
     },
     onSuccess: () => {
       router.push('/data-anak')
+      return toast.success("Data Anak Berhasil Diupdate", {
+        position: "top-center",
+        duration: 2000
+      })
+    },
+    onError: (error: any) => {
+      return toast.error(error?.response?.data?.message || "Terjadi kesalahan saat mengupdate data anak")
     }
   })
 

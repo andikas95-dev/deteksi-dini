@@ -122,7 +122,12 @@ function FormPasien({
               </>
             ) : (
               <>
-                <Button type="button" onClick={() => setValEdit(true)}>
+                <Button type="button" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setValEdit(true)
+                }}
+                >
                   Ubah
                 </Button>
                 <Button
